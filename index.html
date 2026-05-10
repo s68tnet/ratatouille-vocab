@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐭 Ratatouille Vocab</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Tahoma,sans-serif;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh;color:#fff;padding:15px;display:flex;flex-direction:column;align-items:center}
+h1{font-size:1.8em;text-align:center;margin-bottom:5px;background:linear-gradient(45deg,#f39c12,#e74c3c);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:#a0aec0;font-size:.85em;text-align:center;margin-bottom:15px}
+.stats{display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap;justify-content:center}
+.stat{background:rgba(255,255,255,.1);border-radius:12px;padding:8px 15px;text-align:center;min-width:70px}
+.stat .n{font-size:1.5em;font-weight:bold}
+.stat .l{font-size:.7em;color:#a0aec0}
+.n.blue{color:#3498db}.n.green{color:#2ecc71}.n.red{color:#e74c3c}.n.orange{color:#f39c12}
+.lboxes{display:flex;gap:6px;margin-bottom:15px;flex-wrap:wrap;justify-content:center}
+.lbox{border-radius:10px;padding:6px 10px;text-align:center;border:2px solid;min-width:55px}
+.lbox1{border-color:#e74c3c}.lbox2{border-color:#f39c12}.lbox3{border-color:#3498db}.lbox4{border-color:#2ecc71}.lbox5{border-color:#9b59b6}
+.lbox .bn{font-size:.6em;color:#a0aec0}.lbox .bc{font-size:1.3em;font-weight:bold}.lbox .bl{font-size:.6em;color:#a0aec0}
+.pbar{width:100%;max-width:500px;height:7px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;margin-bottom:5px}
+.pfill{height:100%;background:linear-gradient(90deg,#2ecc71,#3498db);border-radius:10px;transition:width .5s}
+.ptxt{text-align:center;font-size:.8em;color:#a0aec0;margin-bottom:15px}
+.card-wrap{perspective:1000px;width:100%;max-width:480px;height:280px;margin-bottom:20px;cursor:pointer}
+.card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .6s}
+.card.flipped{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:25px;text-align:center;border:1px solid rgba(255,255,255,.1)}
+.front{background:linear-gradient(135deg,rgba(52,152,219,.3),rgba(155,89,182,.3));backdrop-filter:blur(15px)}
+.back{background:linear-gradient(135deg,rgba(46,204,113,.3),rgba(52,152,219,.3));backdrop-filter:blur(15px);transform:rotateY(180deg)}
+.cnum{position:absolute;top:12px;left:15px;font-size:.75em;color:#636e72}
+.cbadge{position:absolute;top:12px;right:15px;font-size:.65em;padding:3px 8px;border-radius:8px;background:rgba(255,255,255,.1)}
+.lvl{font-size:.7em;background:rgba(243,156,18,.3);color:#f39c12;padding:3px 10px;border-radius:15px;margin-bottom:12px;border:1px solid rgba(243,156,18,.3)}
+.weng{font-size:2.2em;font-weight:bold;margin-bottom:8px}
+.wpron{font-size:1em;color:#74b9ff;font-style:italic;font-family:monospace;margin-bottom:6px}
+.wpos{font-size:.75em;color:#a0aec0;margin-bottom:8px}
+.hint{font-size:.7em;color:#636e72;margin-top:12px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+.wper{font-size:1.6em;font-weight:bold;margin-bottom:10px}
+.wctx{font-size:.8em;color:#a0aec0;line-height:1.5;padding:8px;background:rgba(0,0,0,.2);border-radius:8px;margin-top:8px}
+.spk{background:rgba(116,185,255,.2);border:1px solid rgba(116,185,255,.4);color:#74b9ff;padding:6px 15px;border-radius:15px;cursor:pointer;font-size:.8em;margin-top:8px}
+.btns{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;justify-content:center}
+.btn{padding:14px 30px;border:none;border-radius:50px;font-size:.95em;cursor:pointer;font-weight:bold;transition:all .3s}
+.bk{background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff;box-shadow:0 5px 15px rgba(46,204,113,.4)}
+.bu{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;box-shadow:0 5px 15px rgba(231,76,60,.4)}
+.bf{background:linear-gradient(135deg,#9b59b6,#8e44ad);color:#fff;box-shadow:0 5px 15px rgba(155,89,182,.4)}
+.btn:active{transform:scale(.95)}
+.done{display:none;text-align:center;background:rgba(255,255,255,.05);border-radius:20px;padding:30px 20px;max-width:480px;width:100%;border:1px solid rgba(255,255,255,.1)}
+.done h2{font-size:1.8em;margin-bottom:15px;background:linear-gradient(45deg,#f39c12,#e74c3c);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.fstats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}
+.fstat{background:rgba(255,255,255,.05);border-radius:12px;padding:12px}
+.fstat .fn{font-size:1.8em;font-weight:bold}.fstat .fl{font-size:.75em;color:#a0aec0}
+.ulist{text-align:right;margin:15px 0;max-height:220px;overflow-y:auto}
+.uitem{background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.2);border-radius:8px;padding:8px 12px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.ueng{color:#e74c3c;font-weight:bold;font-size:.9em}
+.upron{color:#74b9ff;font-size:.7em;font-family:monospace}
+.uper{color:#a0aec0;font-size:.85em}
+.bpdf{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;padding:13px 30px;border:none;border-radius:50px;font-size:.9em;cursor:pointer;margin:8px;font-weight:bold;box-shadow:0 5px 15px rgba(231,76,60,.4)}
+.bres{background:linear-gradient(135deg,#3498db,#2980b9);color:#fff;padding:13px 30px;border:none;border-radius:50px;font-size:.9em;cursor:pointer;margin:8px;font-weight:bold;box-shadow:0 5px 15px rgba(52,152,219,.4)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:4px}
+</style>
+</head>
+<body>
+<h1>🐭 Ratatouille Vocab</h1>
+<p class="sub">سیستم لایتنر - لغات فیلم موش سرآشپز</p>
+<div class="stats">
+  <div class="stat"><div class="n blue" id="tot">0</div><div class="l">کل</div></div>
+  <div class="stat"><div class="n orange" id="rem">0</div><div class="l">باقی</div></div>
+  <div class="stat"><div class="n green" id="kn">0</div><div class="l">✅بلدم</div></div>
+  <div class="stat"><div class="n red" id="un">0</div><div class="l">❌نمیدونم</div></div>
+</div>
+<div class="lboxes">
+  <div class="lbox lbox1"><div class="bn">جعبه۱</div><div class="bc" id="b1">0</div><div class="bl">تازه</div></div>
+  <div class="lbox lbox2"><div class="bn">جعبه۲</div><div class="bc" id="b2">0</div><div class="bl">ضعیف</div></div>
+  <div class="lbox lbox3"><div class="bn">جعبه۳</div><div class="bc" id="b3">0</div><div class="bl">متوسط</div></div>
+  <div class="lbox lbox4"><div class="bn">جعبه۴</div><div class="bc" id="b4">0</div><div class="bl">خوب</div></div>
+  <div class="lbox lbox5"><div class="bn">جعبه۵</div><div class="bc" id="b5">0</div><div class="bl">یادگرفتم</div></div>
+</div>
+<div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
+<div class="ptxt" id="pt">آماده شروع...</div>
+<div class="card-wrap" onclick="flip()">
+  <div class="card" id="card">
+    <div class="front">
+      <span class="cnum" id="cn1">۱/۶۰</span>
+      <span class="cbadge" id="cb">جعبه ۱</span>
+      <div class="lvl" id="wlv">A2</div>
+      <div class="weng" id="wen">loading...</div>
+      <div class="wpron" id="wpr">/ˈloʊdɪŋ/</div>
+      <div class="wpos" id="wps">noun</div>
+      <div class="hint">👆 روی کارت بزن تا معنی ببینی</div>
+    </div>
+    <div class="back">
+      <span class="cnum" id="cn2">۱/۶۰</span>
+      <div class="wper" id="wpe">معنی</div>
+      <div class="wctx" id="wct">جمله نمونه</div>
+      <button class="spk" onclick="spk(event)">🔊 تلفظ</button>
+    </div>
+  </div>
+</div>
+<div class="btns" id="abts">
+  <button class="btn bu" onclick="bad()">❌ بلد نیستم</button>
+  <button class="btn bf" onclick="flip()">🔄 برگردان</button>
+  <button class="btn bk" onclick="good()">✅ بلدم</button>
+</div>
+<div class="done" id="done">
+  <div style="font-size:2.5em;margin-bottom:10px">🎉</div>
+  <h2>پایان جلسه!</h2>
+  <p style="color:#a0aec0;margin-bottom:15px">نتایج یادگیری شما:</p>
+  <div class="fstats">
+    <div class="fstat"><div class="fn" id="fk" style="color:#2ecc71">0</div><div class="fl">✅ بلدم</div></div>
+    <div class="fstat"><div class="fn" id="fu" style="color:#e74c3c">0</div><div class="fl">❌ بلد نیستم</div></div>
+    <div class="fstat"><div class="fn" id="fp" style="color:#f39c12">0%</div><div class="fl">موفقیت</div></div>
+    <div class="fstat"><div class="fn" id="f5" style="color:#9b59b6">0</div><div class="fl">جعبه ۵</div></div>
+  </div>
+  <p style="font-weight:bold;color:#f39c12;margin:12px 0">لغاتی که بلد نیستید:</p>
+  <div class="ulist" id="ul"></div>
+  <button class="bpdf" onclick="mkpdf()">📄 دانلود PDF</button>
+  <button class="bres" onclick="restart()">🔄 شروع مجدد</button>
+</div>
+<script>
+const V=[
+  {w:"cuisine",p:"/kwɪˈziːn/",fa:"آشپزی / سبک غذایی",pos:"noun",lv:"A2",ctx:"French cuisine is world-famous."},
+  {w:"recipe",p:"/ˈresɪpi/",fa:"دستور پخت",pos:"noun",lv:"A2",ctx:"Gusteau's recipe was a secret."},
+  {w:"talent",p:"/ˈtælənt/",fa:"استعداد",pos:"noun",lv:"A2",ctx:"Remy has a great talent for cooking."},
+  {w:"smell",p:"/smel/",fa:"بو / بوییدن",pos:"noun/verb",lv:"A2",ctx:"Remy can smell ingredients from far away."},
+  {w:"taste",p:"/teɪst/",fa:"مزه / چشیدن",pos:"noun/verb",lv:"A2",ctx:"He can taste every flavor clearly."},
+  {w:"garbage",p:"/ˈɡɑːrbɪdʒ/",fa:"زباله / آشغال",pos:"noun",lv:"A2",ctx:"His family eats garbage from the streets."},
+  {w:"kitchen",p:"/ˈkɪtʃɪn/",fa:"آشپزخانه",pos:"noun",lv:"A2",ctx:"The kitchen is a dangerous place for a rat."},
+  {w:"restaurant",p:"/ˈrestərɑːnt/",fa:"رستوران",pos:"noun",lv:"A2",ctx:"Gusteau's restaurant was very famous."},
+  {w:"chef",p:"/ʃef/",fa:"سرآشپز",pos:"noun",lv:"A2",ctx:"Linguini became the head chef."},
+  {w:"fresh",p:"/freʃ/",fa:"تازه",pos:"adjective",lv:"A2",ctx:"Always use fresh ingredients."},
+  {w:"flavor",p:"/ˈfleɪvər/",fa:"طعم / مزه",pos:"noun",lv:"A2",ctx:"The flavor of the soup was amazing."},
+  {w:"ingredient",p:"/ɪnˈɡriːdiənt/",fa:"ماده اولیه",pos:"noun",lv:"A2",ctx:"He mixed the ingredients carefully."},
+  {w:"discover",p:"/dɪˈskʌvər/",fa:"کشف کردن",pos:"verb",lv:"A2",ctx:"Remy discovered his love for cooking."},
+  {w:"dream",p:"/driːm/",fa:"رویا / آرزو",pos:"noun/verb",lv:"A2",ctx:"His dream was to cook in Paris."},
+  {w:"secret",p:"/ˈsiːkrɪt/",fa:"راز / سری",pos:"noun",lv:"A2",ctx:"Their arrangement was a secret."},
+  {w:"steal",p:"/stiːl/",fa:"دزدیدن",pos:"verb",lv:"A2",ctx:"Rats steal food from humans."},
+  {w:"hide",p:"/haɪd/",fa:"پنهان کردن",pos:"verb",lv:"A2",ctx:"Remy had to hide inside Linguini's hat."},
+  {w:"control",p:"/kənˈtroʊl/",fa:"کنترل کردن",pos:"verb",lv:"A2",ctx:"Remy controls Linguini by pulling his hair."},
+  {w:"trust",p:"/trʌst/",fa:"اعتماد کردن",pos:"verb",lv:"A2",ctx:"Linguini had to trust the little rat."},
+  {w:"famous",p:"/ˈfeɪməs/",fa:"مشهور",pos:"adjective",lv:"A2",ctx:"Gusteau was a famous chef in Paris."},
+  {w:"inspire",p:"/ɪnˈspaɪər/",fa:"الهام بخشیدن",pos:"verb",lv:"B1",ctx:"Gusteau's book inspired Remy to cook."},
+  {w:"passion",p:"/ˈpæʃən/",fa:"اشتیاق / علاقه شدید",pos:"noun",lv:"B1",ctx:"Remy had a passion for fine food."},
+  {w:"disguise",p:"/dɪsˈɡaɪz/",fa:"ظاهر دیگری گرفتن",pos:"noun/verb",lv:"B1",ctx:"The rat was in disguise under the hat."},
+  {w:"reputation",p:"/ˌrepjuˈteɪʃən/",fa:"شهرت / اعتبار",pos:"noun",lv:"B1",ctx:"The restaurant's reputation was at stake."},
+  {w:"appreciate",p:"/əˈpriːʃieɪt/",fa:"قدردانی کردن",pos:"verb",lv:"B1",ctx:"Ego didn't appreciate modern cuisine."},
+  {w:"collaborate",p:"/kəˈlæbəreɪt/",fa:"همکاری کردن",pos:"verb",lv:"B1",ctx:"Remy and Linguini collaborated together."},
+  {w:"extraordinary",p:"/ɪkˈstrɔːrdɪneri/",fa:"فوق‌العاده",pos:"adjective",lv:"B1",ctx:"Anyone can cook extraordinary food."},
+  {w:"jealous",p:"/ˈdʒeləs/",fa:"حسود",pos:"adjective",lv:"B1",ctx:"Skinner was jealous of Linguini's success."},
+  {w:"pressure",p:"/ˈpreʃər/",fa:"فشار",pos:"noun",lv:"B1",ctx:"There was a lot of pressure in the kitchen."},
+  {w:"desperate",p:"/ˈdespərɪt/",fa:"ناامید / مستأصل",pos:"adjective",lv:"B1",ctx:"Linguini was desperate for help."},
+  {w:"reveal",p:"/rɪˈviːl/",fa:"فاش کردن",pos:"verb",lv:"B1",ctx:"Colette revealed the truth to Linguini."},
+  {w:"impress",p:"/ɪmˈpres/",fa:"تحت تأثیر قرار دادن",pos:"verb",lv:"B1",ctx:"Remy wanted to impress the critic."},
+  {w:"accomplish",p:"/əˈkʌmplɪʃ/",fa:"انجام دادن",pos:"verb",lv:"B1",ctx:"He accomplished his dream of cooking."},
+  {w:"determination",p:"/dɪˌtɜːrmɪˈneɪʃən/",fa:"اراده / تصمیم قوی",pos:"noun",lv:"B1",ctx:"Remy showed great determination."},
+  {w:"authority",p:"/ɔːˈθɔːrɪti/",fa:"اقتدار / صلاحیت",pos:"noun",lv:"B1",ctx:"Skinner tried to assert his authority."},
+  {w:"potential",p:"/pəˈtenʃəl/",fa:"توانایی بالقوه",pos:"noun",lv:"B1",ctx:"Remy showed great potential as a cook."},
+  {w:"convince",p:"/kənˈvɪns/",fa:"متقاعد کردن",pos:"verb",lv:"B1",ctx:"Remy convinced his father to trust humans."},
+  {w:"reject",p:"/rɪˈdʒekt/",fa:"رد کردن",pos:"verb",lv:"B1",ctx:"Ego rejected all the restaurant's dishes."},
+  {w:"technique",p:"/tekˈniːk/",fa:"تکنیک / روش",pos:"noun",lv:"B1",ctx:"Colette taught Linguini proper technique."},
+  {w:"supervise",p:"/ˈsuːpərvaɪz/",fa:"نظارت کردن",pos:"verb",lv:"B1",ctx:"Remy supervised the cooking from above."},
+  {w:"contempt",p:"/kənˈtempt/",fa:"تحقیر / بی‌احترامی",pos:"noun",lv:"B2",ctx:"Ego showed contempt for lesser food."},
+  {w:"manipulate",p:"/məˈnɪpjuleɪt/",fa:"دستکاری کردن",pos:"verb",lv:"B2",ctx:"Remy manipulated Linguini's movements."},
+  {w:"critique",p:"/krɪˈtiːk/",fa:"نقد / بررسی انتقادی",pos:"noun",lv:"B2",ctx:"Ego wrote a devastating critique."},
+  {w:"pretentious",p:"/prɪˈtenʃəs/",fa:"متظاهر / ادعایی",pos:"adjective",lv:"B2",ctx:"Some food critics are pretentious."},
+  {w:"innovation",p:"/ˌɪnəˈveɪʃən/",fa:"نوآوری",pos:"noun",lv:"B2",ctx:"Remy brought innovation to French cooking."},
+  {w:"perseverance",p:"/ˌpɜːrsɪˈvɪərəns/",fa:"پشتکار / استقامت",pos:"noun",lv:"B2",ctx:"Remy's perseverance led him to success."},
+  {w:"subtle",p:"/ˈsʌtl/",fa:"ظریف / دقیق",pos:"adjective",lv:"B2",ctx:"The subtle flavors balanced each other."},
+  {w:"arrogance",p:"/ˈærəɡəns/",fa:"غرور / تکبر",pos:"noun",lv:"B2",ctx:"Skinner's arrogance blinded him."},
+  {w:"nostalgia",p:"/nɒˈstældʒə/",fa:"دلتنگی برای گذشته",pos:"noun",lv:"B2",ctx:"The ratatouille brought Ego nostalgia."},
+  {w:"mediocrity",p:"/ˌmiːdiˈɒkrɪti/",fa:"متوسط بودن",pos:"noun",lv:"B2",ctx:"Gusteau refused to accept mediocrity."},
+  {w:"eccentric",p:"/ɪkˈsentrɪk/",fa:"عجیب و غریب",pos:"adjective",lv:"B2",ctx:"Remy was considered eccentric by other rats."},
+  {w:"hierarchy",p:"/ˈhaɪərɑːrki/",fa:"سلسله مراتب",pos:"noun",lv:"B2",ctx:"The kitchen has a strict hierarchy."},
+  {w:"improvise",p:"/ˈɪmprəvaɪz/",fa:"بداهه عمل کردن",pos:"verb",lv:"B2",ctx:"Remy had to improvise the soup recipe."},
+  {w:"exquisite",p:"/ɪkˈskwɪzɪt/",fa:"بسیار زیبا / لذیذ",pos:"adjective",lv:"B2",ctx:"The ratatouille was exquisite in taste."},
+  {w:"catastrophe",p:"/kəˈtæstrəfi/",fa:"فاجعه / بلا",pos:"noun",lv:"B2",ctx:"The rat invasion was a catastrophe."},
+  {w:"scrutiny",p:"/ˈskruːtɪni/",fa:"بررسی دقیق / موشکافی",pos:"noun",lv:"B2",ctx:"The restaurant was under Ego's scrutiny."},
+  {w:"culinary",p:"/ˈkʌlɪneri/",fa:"مربوط به آشپزی",pos:"adjective",lv:"B2",ctx:"Paris is the culinary capital of the world."},
+  {w:"elusive",p:"/ɪˈluːsɪv/",fa:"گریزپا / دست‌نیافتنی",pos:"adjective",lv:"B2",ctx:"Success was elusive for young Linguini."},
+  {w:"underestimate",p:"/ˌʌndərˈestɪmeɪt/",fa:"دست کم گرفتن",pos:"verb",lv:"B2",ctx:"Ego underestimated Remy's skills."},
+  {w:"palate",p:"/ˈpælɪt/",fa:"کام / ذوق چشیدن",pos:"noun",lv:"B2",ctx:"Remy had an extraordinarily refined palate."},
+  {w:"gastronomy",p:"/ɡæˈstrɒnəmi/",fa:"هنر آشپزی",pos:"noun",lv:"B2",ctx:"French gastronomy is respected worldwide."}
+];
+let cards,idx,isFlip,kn,un,uwords,boxes;
+function init(){
+  cards=[...V].map(x=>({...x,box:1}));
+  shuffle(cards);
+  idx=0;isFlip=false;kn=0;un=0;uwords=[];
+  boxes={1:[...cards],2:[],3:[],4:[],5:[]};
+  document.getElementById('tot').textContent=cards.length;
+  updateUI();showCard();
+  document.getElementById('done').style.display='none';
+  document.getElementById('card').closest('.card-wrap').style.display='block';
+  document.getElementById('abts').style.display='flex';
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}}
+function showCard(){
+  if(idx>=cards.length){showDone();return}
+  const c=cards[idx];
+  isFlip=false;
+  document.getElementById('card').classList.remove('flipped');
+  document.getElementById('cn1').textContent=`${idx+1}/${cards.length}`;
+  document.getElementById('cn2').textContent=`${idx+1}/${cards.length}`;
+  document.getElementById('wlv').textContent=c.lv;
+  document.getElementById('wen').textContent=c.w;
+  document.getElementById('wpr').textContent=c.p;
+  document.getElementById('wps').textContent=c.pos;
+  document.getElementById('cb').textContent=`جعبه ${c.box}`;
+  document.getElementById('wpe').textContent=c.fa;
+  document.getElementById('wct').innerHTML=`📝 <em>"${c.ctx}"</em>`;
+  const pr=(idx/cards.length)*100;
+  document.getElementById('pf').style.width=pr+'%';
+  document.getElementById('pt').textContent=`پیشرفت: ${idx} از ${cards.length}`;
+  updateUI();
+}
+function flip(){isFlip=!isFlip;document.getElementById('card').classList.toggle('flipped')}
+function good(){
+  const c=cards[idx];kn++;
+  if(c.box<5){boxes[c.box]=boxes[c.box].filter(x=>x.w!==c.w);c.box++;boxes[c.box].push(c);}
+  idx++;showCard();
+}
+function bad(){
+  const c=cards[idx];un++;
+  if(c.box>1){boxes[c.box]=boxes[c.box].filter(x=>x.w!==c.w);c.box=1;boxes[1].push(c);}
+  if(!uwords.find(x=>x.w===c.w))uwords.push(c);
+  idx++;showCard();
+}
+function spk(e){
+  e.stopPropagation();
+  const c=cards[idx];
+  if('speechSynthesis' in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(c.w);u.lang='en-US';u.rate=0.8;speechSynthesis.speak(u);}
+}
+function updateUI(){
+  document.getElementById('rem').textContent=cards.length-idx;
+  document.getElementById('kn').textContent=kn;
+  document.getElementById('un').textContent=un;
+  for(let i=1;i<=5;i++)document.getElementById('b'+i).textContent=boxes[i].length;
+}
+function showDone(){
+  document.getElementById('card').closest('.card-wrap').style.display='none';
+  document.getElementById('abts').style.display='none';
+  document.getElementById('done').style.display='block';
+  const tot=kn+un;const pct=tot>0?Math.round(kn/tot*100):0;
+  document.getElementById('fk').textContent=kn;
+  document.getElementById('fu').textContent=un;
+  document.getElementById('fp').textContent=pct+'%';
+  document.getElementById('f5').textContent=boxes[5].length;
+  const ul=document.getElementById('ul');ul.innerHTML='';
+  if(uwords.length===0){ul.innerHTML='<p style="color:#2ecc71;text-align:center">🎉 همه لغات را بلد بودید!</p>';}
+  else{uwords.forEach(w=>{const d=document.createElement('div');d.className='uitem';d.innerHTML=`<div><div class="ueng">${w.w}</div><div class="upron">${w.p}</div></div><div class="uper">${w.fa}</div>`;ul.appendChild(d);});}
+}
+function mkpdf(){
+  if(typeof window.jspdf==='undefined'){alert('صبر کنید...');setTimeout(mkpdf,2000);return;}
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'p',unit:'mm',format:'a4'});
+  const pw=210,ph=297,mg=15;let y=mg;
+  doc.setFillColor(15,52,96);doc.rect(0,0,pw,ph,'F');
+  doc.setFillColor(231,76,60);doc.rect(0,0,pw,30,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(255,255,255);
+  doc.text('Ratatouille - Unknown Words',pw/2,12,{align:'center'});
+  doc.setFontSize(10);doc.setTextColor(255,200,200);
+  doc.text('لغاتی که بلد نیستید',pw/2,22,{align:'center'});
+  y=40;
+  doc.setFillColor(22,33,62);doc.roundedRect(mg,y,pw-2*mg,14,3,3,'F');
+  doc.setFontSize(9);doc.setTextColor(160,174,192);
+  doc.text(`Unknown: ${uwords.length}  |  Known: ${kn}  |  Success: ${kn+un>0?Math.round(kn/(kn+un)*100):0}%`,pw/2,y+9,{align:'center'});
+  y+=22;
+  if(uwords.length===0){doc.setFontSize(14);doc.setTextColor(46,204,113);doc.text('You knew all words!',pw/2,y+20,{align:'center'});}
+  else{
+    doc.setFillColor(52,152,219);doc.rect(mg,y,pw-2*mg,9,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(255,255,255);
+    doc.text('#',mg+3,y+6);doc.text('Word',mg+15,y+6);doc.text('Pronunciation',mg+60,y+6);doc.text('Persian',mg+110,y+6);doc.text('Lvl',mg+165,y+6);
+    y+=11;
+    uwords.forEach((w,i)=>{
+      if(y>ph-25){doc.addPage();doc.setFillColor(15,52,96);doc.rect(0,0,pw,ph,'F');y=15;}
+      doc.setFillColor(i%2===0?22:26,i%2===0?33:40,i%2===0?62:75);doc.rect(mg,y-1,pw-2*mg,10,'F');
+      if(w.lv==='A2')doc.setFillColor(46,204,113);else if(w.lv==='B1')doc.setFillColor(243,156,18);else doc.setFillColor(231,76,60);
+      doc.rect(mg,y-1,2.5,10,'F');
+      doc.setFont('helvetica','normal');doc.setFontSize(8);
+      doc.setTextColor(160,174,192);doc.text(`${i+1}`,mg+4,y+6);
+      doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);doc.text(w.w,mg+15,y+6);
+      doc.setFont('helvetica','normal');doc.setTextColor(116,185,255);doc.text(w.p,mg+60,y+6);
+      doc.setTextColor(200,220,255);const fa=w.fa.length>22?w.fa.substring(0,22)+'...':w.fa;doc.text(fa,mg+110,y+6);
+      if(w.lv==='A2')doc.setTextColor(46,204,113);else if(w.lv==='B1')doc.setTextColor(243,156,18);else doc.setTextColor(231,76,60);
+      doc.setFont('helvetica','bold');doc.text(w.lv,mg+166,y+6);y+=11;
+    });
+  }
+  doc.setFillColor(231,76,60);doc.rect(0,ph-10,pw,10,'F');
+  doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(255,200,200);
+  doc.text('Ratatouille Vocabulary Leitner System',pw/2,ph-3,{align:'center'});
+  doc.save('Ratatouille_Unknown_Words.pdf');
+}
+function restart(){init()}
+window.onload=init;
+</script>
+</body>
+</html>
